@@ -1,6 +1,10 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+input:focus,
+input:active {
+  outline: none;
+}
 
 .nav__link {
   color: #191a15;
@@ -132,7 +136,7 @@ body {
   padding: 45px 0;
 }
 
-.admin_add_product{
+.admin_add_product {
   width: 72px;
   height: 72px;
   flex-direction: column;
@@ -166,6 +170,50 @@ body {
 }
 #admin_table_delete {
   color: #f51c1c;
+}
+
+.add_photos {
+  position: relative;
+  border: 1px solid #2b9b73;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  transition: 0.3s;
+}
+.add_photos:hover {
+  background-color: rgba(43, 155, 116, 0.2);
+}
+.add_product_btn:first-child {
+  width: 120px;
+  background-color: transparent;
+  color: #2b9b73;
+}
+.add_product_btn:first-child:hover {
+  background-color: rgba(43, 155, 116, 0.3);
+}
+.add_product_btn {
+  width: 150px;
+  border: 1px solid #2b9b73;
+}
+
+.photo_item {
+  border-radius: 10px;
+  border: 1px solid #ccced1;
+  aspect-ratio: 1/1;
+}
+.photo_item_btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  accent-color: #2b9b73;
+}
+button.photo_item_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #919191;
 }
 
 @media (max-width: 1400px) {

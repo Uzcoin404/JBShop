@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- <link href="/dist/output.css" rel="stylesheet"> -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="/dist/output.css" rel="stylesheet">
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -97,9 +97,9 @@
     </div>
   </header>
   <div class="hero">
-    <div class="2xl:container mx-auto px-5">
+    <div class="2xl:container mx-auto px-5 lg:pr-5 pr-0">
       <div class="hero_content flex items-center">
-        <div>
+        <div style="min-width: 320px;">
           <h1 class="hero_title">
             Hochwertige und nicht teure Waren für die ganze Familie!
           </h1>
@@ -107,12 +107,12 @@
             Beste Wahl!
           </a>
         </div>
-        <img src="img/hero.png" alt="">
+        <img src="img/hero.png" alt="" class="hero_img">
       </div>
     </div>
   </div>
   <div class="2xl:container mx-auto px-5">
-    <div class="flex flex-wrap bg_green lg:gap-x-8 gap-4 lg:px-8 px-4 py-2 mt-8 rounded">
+    <div class="flex flex-wrap lg:justify-between bg_green lg:gap-x-8 gap-4 lg:px-8 px-4 py-2 mt-8 rounded">
       <a href="#" class="2xl:text-lg text-sm text-white font-medium">Gartenmöbel</a>
       <a href="#" class="2xl:text-lg text-sm text-white font-medium">Tierbedarf</a>
       <a href="#" class="2xl:text-lg text-sm text-white font-medium">Haushaltgeräte</a>
@@ -201,7 +201,7 @@
       </div>
     </div>
     <div class="flex lg:flex-nowrap flex-wrap xl:gap-x-12 lg:gap-x-6 mt-16">
-      <div class="lg:w-2/5">
+      <div class="product_section">
         <h1 class="hero_title max-w-none mb-10">
           Hochwertige und nicht teure Waren für die ganze Familie!
         </h1>
@@ -224,7 +224,7 @@
           </div>
         </div>
       </div>
-      <div class="flex-auto lg:w-3/5">
+      <div class="product_section">
         <div class="flex flex-wrap gap-3 justify-between lg:mt-0 mt-8">
           <div class="flex">
             <span class="product_price 2xl:text-5xl lg:text-4xl text-3xl">
@@ -234,9 +234,9 @@
               €600<sup class="lg:text-lg text-base align-baseline">00</sup>
             </span>
           </div>
-          <div class="flex gap-x-2">
-            <button type="button" class="product_btn">Copy link</button>
-            <button type="button" class="product_btn">
+          <div class="flex gap-x-2 lg:w-auto w-full">
+            <button type="button" class="product_btn lg:w-auto w-full">Copy link</button>
+            <button type="button" class="product_btn lg:w-auto w-full">
               <svg class="mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.25 7H16.75V5C16.75 3 16 2 13.75 2H10.25C8 2 7.25 3 7.25 5V7Z" stroke="#292D32"

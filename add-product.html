@@ -26,6 +26,10 @@
 							class="block w-full lg:h-20 h-12 rounded-md border-0 py-1.5 px-8 lg:text-lg text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset">
 					</div>
 				</div>
+				<div id="uploaded_images"
+					class="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-3 sm:grid-cols-2 gap-2.5 mt-2.5">
+
+				</div>
 				<div class="add_photos w-full">
 					<div>
 						<svg xmlns="http://www.w3.org/2000/svg" width="47" height="47" viewBox="0 0 47 47" fill="none"
@@ -41,7 +45,8 @@
 							<b>add photos</b> <br>
 							(up to 10 pictures)
 						</p>
-						<input name="photos" type="file" class="absolute opacity-0 top-0 left-0 w-full h-full">
+						<input name="photos" id="upload_input" type="file" multiple="10" accept="image/*"
+							class="absolute opacity-0 top-0 left-0 w-full h-full">
 					</div>
 				</div>
 			</div>
@@ -93,6 +98,48 @@
 			plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
 			toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
 		});
+
+		let uploadInput = document.querySelector('#upload_input');
+		let imagesCount;
+		function imagesCountWatch(amount) {
+			if (imagesCount + amount < 10) {
+				imagesCount += amount;
+			}
+		}
+
+		uploadInput.addEventListener('change', function (event) {
+			if (event.target.files && event.target.files?.length <= 10) {
+				let amount = event.target.files.length;
+				imagesCount += amount;
+				console.log(event.target.files);
+				for (let i = 0; i < amount; i++) {
+					let reader = new FileReader();
+					reader.onload = function (event) {
+						console.log(event);
+						let uniqueID = Date.now() + "_" + Math.floor(Math.random() * 100);
+						let html = `
+						<div class="photo_item relative" data-index="${uniqueID}">
+							<img src="${event.target.result}" alt="" class="h-full">
+							<div class="photo_content absolute top-2.5 right-2.5">
+								<div class="flex gap-x-1.5">
+								<button type="button" id="uploaded_item_delete_btn" class="photo_item_btn" data-index="${uniqueID}">
+									<img src="img/icons/trash.svg" alt="">
+								</button>
+								<input type="checkbox" name="main_image" id="main_image" class="photo_item_btn">
+								</div>
+							</div>
+						</div>`;
+						document.querySelector('#uploaded_images').insertAdjacentHTML('beforeend', html)
+					}
+					reader.readAsDataURL(event.target.files[i])
+				}
+			}
+		})
+		window.addEventListener('click', function (event) {
+			if (event.target.id === 'uploaded_item_delete_btn') {
+				document.querySelector(`.photo_item[data-index="${event.target.getAttribute('data-index')}"]`).remove();
+			}
+		})
 	</script>
 </body>
 

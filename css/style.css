@@ -59,7 +59,7 @@ input:active {
   font-weight: 500;
   border-top: 1px solid transparent;
   cursor: default;
-  transition: .3s;
+  transition: 0.3s;
 }
 .hero_menu_link .link_title:hover {
   color: #000;
@@ -86,7 +86,7 @@ input:active {
   opacity: 0;
   pointer-events: none;
 }
-.hero_menu_link:hover .hero_menu_content{
+.hero_menu_link:hover .hero_menu_content {
   opacity: 1;
   pointer-events: all;
 }
@@ -110,6 +110,19 @@ input:active {
   background-color: rgba(51, 51, 51, 0.1);
 }
 
+.card__img {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 14px 0;
+  transition: .2s;
+}
+.card__img:hover{
+  opacity: 0.8;
+}
+.card .product_price{
+  border-radius: 10px;
+}
+
 .product_section:first-child {
   width: 45%;
 }
@@ -124,7 +137,7 @@ input:active {
   font-weight: 700;
   padding: 10px 20px 10px 30px;
   border-radius: 20px;
-  line-height: 73px;
+  /* line-height: 73px; */
   background-color: #2b9b73;
   color: #fff;
 }

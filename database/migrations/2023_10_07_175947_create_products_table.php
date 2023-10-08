@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->decimal('price');
-            $table->decimal('discount_price');
+            $table->decimal('discount_price')->nullable();
             $table->text('html');
+            $table->json('photos');
             $table->timestamps();
         });
     }

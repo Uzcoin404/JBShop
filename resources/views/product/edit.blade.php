@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-  <link rel="stylesheet" href="dist/output.css">
-  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  {{-- <link rel="stylesheet" href="dist/output.css"> --}}
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <body>
@@ -43,7 +43,8 @@
             <div class="photo_content absolute top-2.5 right-2.5">
               <div class="flex gap-x-1.5">
                 <button type="button" class="photo_item_btn">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M14.5772 3.98774C12.2658 3.76767 9.9405 3.6543 7.62212 3.6543C6.24775 3.6543 4.87339 3.72098 3.49902 3.85436L2.08301 3.98774"
                       stroke="#333333" stroke-width="0.800254" stroke-linecap="round" stroke-linejoin="round" />
@@ -68,7 +69,8 @@
             <div class="photo_content absolute top-2.5 right-2.5">
               <div class="flex gap-x-1.5">
                 <button type="button" class="photo_item_btn">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M14.5772 3.98774C12.2658 3.76767 9.9405 3.6543 7.62212 3.6543C6.24775 3.6543 4.87339 3.72098 3.49902 3.85436L2.08301 3.98774"
                       stroke="#333333" stroke-width="0.800254" stroke-linecap="round" stroke-linejoin="round" />
@@ -78,10 +80,10 @@
                     <path
                       d="M13.0847 6.0957L12.6335 12.8112C12.5572 13.8582 12.4947 14.6718 10.5581 14.6718H6.10181C4.1652 14.6718 4.10273 13.8582 4.02638 12.8112L3.5752 6.0957"
                       stroke="#333333" stroke-width="0.800254" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M7.17041 11.0039H9.48184" stroke="#333333" stroke-width="0.800254" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                    <path d="M6.59424 8.33691H10.0649" stroke="#333333" stroke-width="0.800254" stroke-linecap="round"
-                      stroke-linejoin="round" />
+                    <path d="M7.17041 11.0039H9.48184" stroke="#333333" stroke-width="0.800254"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M6.59424 8.33691H10.0649" stroke="#333333" stroke-width="0.800254"
+                      stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </button>
                 <input type="checkbox" name="" id="" class="photo_item_btn">
@@ -93,7 +95,8 @@
             <div class="photo_content absolute top-2.5 right-2.5">
               <div class="flex gap-x-1.5">
                 <button type="button" class="photo_item_btn">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M14.5772 3.98774C12.2658 3.76767 9.9405 3.6543 7.62212 3.6543C6.24775 3.6543 4.87339 3.72098 3.49902 3.85436L2.08301 3.98774"
                       stroke="#333333" stroke-width="0.800254" stroke-linecap="round" stroke-linejoin="round" />
@@ -103,10 +106,10 @@
                     <path
                       d="M13.0847 6.0957L12.6335 12.8112C12.5572 13.8582 12.4947 14.6718 10.5581 14.6718H6.10181C4.1652 14.6718 4.10273 13.8582 4.02638 12.8112L3.5752 6.0957"
                       stroke="#333333" stroke-width="0.800254" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M7.17041 11.0039H9.48184" stroke="#333333" stroke-width="0.800254" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                    <path d="M6.59424 8.33691H10.0649" stroke="#333333" stroke-width="0.800254" stroke-linecap="round"
-                      stroke-linejoin="round" />
+                    <path d="M7.17041 11.0039H9.48184" stroke="#333333" stroke-width="0.800254"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M6.59424 8.33691H10.0649" stroke="#333333" stroke-width="0.800254"
+                      stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </button>
                 <input type="checkbox" name="" id="" class="photo_item_btn">
@@ -115,8 +118,8 @@
           </div>
           <div class="add_photos w-full aspect-square" style="height: 100%;">
             <div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="47" height="47" viewBox="0 0 47 47" fill="none"
-                class="mx-auto">
+              <svg xmlns="http://www.w3.org/2000/svg" width="47" height="47" viewBox="0 0 47 47"
+                fill="none" class="mx-auto">
                 <path
                   d="M0 23.0635C0 21.6773 1.12373 20.5535 2.50992 20.5535H43.5053C44.8915 20.5535 46.0152 21.6773 46.0152 23.0635C46.0152 24.4497 44.8915 25.5734 43.5053 25.5734H2.50992C1.12373 25.5734 0 24.4497 0 23.0635Z"
                   fill="#494949" />

@@ -36,7 +36,7 @@ class ProductController extends Controller
             'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $imagesPath = [];
-        if ($request->file('photos')){
+        if ($request->file('photos')) {
             foreach ($request->file('photos') as $image) {
                 $path = $image->store('product/img');
                 $imagesPath[] = $path;
@@ -58,7 +58,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view('product', compact('product'));
     }
 
     /**
@@ -66,7 +67,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        return view('product.edit');
+        $product = Product::findOrFail($id);
+        return view('product.edit', compact('product'));
     }
 
     /**
@@ -74,7 +76,20 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $request->validate([
+            'title' => 'required|max:255',
+            'price' => 'required',
+            'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $product->update([
+            'title' => $request->title,
+            'price' => $request->price,
+            'discount_price' => $request->discount_price,
+            'html' => $request->html,
+            'photos' => '[]'
+        ]);
+        return redirect('products');
     }
 
     /**
@@ -82,6 +97,8 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect('products');
     }
 }

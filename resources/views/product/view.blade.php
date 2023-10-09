@@ -19,7 +19,7 @@
   <div class="2xl:container mx-auto lg:px-10 px-4 my-12">
     <div class="flex items-center justify-between">
       <h1 class="lg:text-4xl text-3xl font-bold text-gray-800">Admin</h1>
-      <a href="add-product.html">
+      <a href="{{ route('products.create') }}">
         <div class="btn admin_add_product">
           <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
             <path
@@ -73,7 +73,13 @@
                 <td align="right">
                   <a href="{{ route('products.edit', $product->id) }}" id="product_edit_btn"
                     class="font-bold lg:mr-8 mr-3">edit</a>
-                  <button type="button" id="product_delete_btn" class="font-bold">delete</button>
+                  <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" id="product_delete_btn"
+                      onclick="return confirm('Are you sure you want to delete this product?')"
+                      class="font-bold">delete</button>
+                  </form>
                 </td>
               </tr>
             @endforeach
@@ -97,8 +103,15 @@
                 </h5>
                 <p class="text-xl font-bold text-gray-800">€{{ $product->price }}</p>
                 <div class="flex gap-x-1 mt-3.5">
-                  <a href="{{ route('products.edit', $product->id) }}" id="product_edit_btn" class="grid_view_product_btn flex-auto">edit</a>
-                  <button id="product_delete_btn" class="grid_view_product_btn flex-auto">delete</button>
+                  <a href="{{ route('products.edit', $product->id) }}" id="product_edit_btn"
+                    class="grid_view_product_btn flex-auto">edit</a>
+                  <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="flex-auto inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" id="product_delete_btn" class="grid_view_product_btn w-full"
+                      onclick="return confirm('Are you sure you want to delete this product?')"
+                      class="font-bold">delete</button>
+                  </form>
                 </div>
               </div>
             </div>

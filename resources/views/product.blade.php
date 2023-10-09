@@ -8,10 +8,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="/dist/output.css" rel="stylesheet">
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-  <link rel="stylesheet" href="css/style.css">
+  {{-- <link href="/dist/output.css" rel="stylesheet"> --}}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
+@php
+  $photos = json_decode($product->photos);
+  // Format the number with two decimal places
+  $formattedPrice = number_format($product->price, 2);
+  $price = explode('.', $formattedPrice)[0];
+  $decimal = explode('.', $formattedPrice)[1];
+  if (isset($product->discount_price)) {
+    $formattedDPrice = number_format($product->discount_price, 2);
+    $dPrice = explode('.', $formattedDPrice)[0];
+    $dDecimal = explode('.', $formattedDPrice)[1];
+  }
+  
+@endphp
 
 <body>
   <header>
@@ -213,36 +226,26 @@
     <div class="flex lg:flex-nowrap flex-wrap xl:gap-x-12 lg:gap-x-6 mt-16">
       <div class="product_section">
         <h1 class="hero_title max-w-none mb-10">
-          Hochwertige und nicht teure Waren für die ganze Familie!
+          {{ $product->title }}
         </h1>
-        <div class="flex flex-wrap gap-y-5">
-          <img src="img/image1.png" alt="" class="product_image">
-          <div class="flex gap-x-5">
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-          </div>
-          <div class="flex gap-x-5">
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-          </div>
-          <div class="flex gap-x-5">
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-            <div><img src="img/image1.png" alt="" class="product_image"></div>
-          </div>
+        <div class="grid grid-cols-3 gap-y-5">
+          @foreach ($photos as $image)
+            <img src="{{ asset('storage/') . '/' . $image }}" alt=""
+              class="product_image{{ $loop->first ? ' col-span-3' : '' }}">
+          @endforeach
         </div>
       </div>
       <div class="product_section">
         <div class="flex flex-wrap gap-3 justify-between lg:mt-0 mt-8">
           <div class="flex">
             <span class="product_price 2xl:text-5xl lg:text-4xl text-3xl">
-              €499<sup class="lg:text-3xl text-2xl">00</sup>
+              €{{ $price }}<sup class="lg:text-3xl text-2xl">{{ $decimal }}</sup>
             </span>
-            <span class="price_strike lg:text-3xl text-2xl">
-              €600<sup class="lg:text-lg text-base align-baseline">00</sup>
-            </span>
+            @isset($product->discount_price)
+              <span class="price_strike lg:text-3xl text-2xl">
+                €{{$dPrice}}<sup class="lg:text-lg text-base align-baseline">{{$dDecimal}}</sup>
+              </span>
+            @endisset
           </div>
           <div class="flex gap-x-2 lg:w-auto w-full">
             <button type="button" class="product_btn lg:w-auto w-full">Copy link</button>
@@ -258,13 +261,14 @@
                   stroke-linejoin="round" />
                 <path d="M17 15H15.79H7" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
                   stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M7 11H10" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                  stroke-linejoin="round" />
+                <path d="M7 11H10" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10"
+                  stroke-linecap="round" stroke-linejoin="round" />
               </svg>
               Print</button>
           </div>
         </div>
-        <table class="product_details_table mt-5 mb-10">
+        {!! $product->html !!}
+        {{-- <table class="product_details_table mt-5 mb-10">
           <tbody>
             <tr>
               <td>Artikelzustand</td>
@@ -342,7 +346,7 @@
         <ul class="product_info_list xl:text-lg text-base">
           <li>Außenmaße : ca. H 55 x B 37 x T 23 cm</li>
           <li>Gewicht : ca. 2,60 kg</li>
-        </ul>
+        </ul> --}}
       </div>
     </div>
   </div>
@@ -405,13 +409,13 @@
 
   <script>
     let navbarToggle = document.querySelector('#navbar_toggle');
-    document.querySelector('#navbar_menu_btn').addEventListener('click', function () {
+    document.querySelector('#navbar_menu_btn').addEventListener('click', function() {
       navbarToggle.classList.remove('hidden');
     })
-    document.querySelector('#navbar_close_btn').addEventListener('click', function () {
+    document.querySelector('#navbar_close_btn').addEventListener('click', function() {
       navbarToggle.classList.add('hidden');
     })
-    document.querySelector('#navbar_toggle_backdrop').addEventListener('click', function () {
+    document.querySelector('#navbar_toggle_backdrop').addEventListener('click', function() {
       navbarToggle.classList.add('hidden');
     })
   </script>

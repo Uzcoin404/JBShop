@@ -28,12 +28,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('/products', ProductController::class)->names([
         'index' => 'products.index',
         'create' => 'products.create',
-        'edit' => 'products.edit',
-        'destroy' => 'products.destroy',
-    ]);
+        'edit' => 'products.edit'
+    ])->except('show');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 require __DIR__.'/auth.php';

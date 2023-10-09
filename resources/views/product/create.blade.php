@@ -83,7 +83,7 @@
 					</textarea>
         </div>
         <div class="flex lg:justify-end">
-          <button type="button" class="btn add_product_btn mr-2">Cancel</button>
+          <a href="{{ route('products.index') }}" class="btn add_product_btn mr-2">Cancel</a>
           <button type="submit" class="btn add_product_btn">Save</button>
         </div>
       </div>

@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(15);
 
         return view('product.view', compact('products'));
     }
@@ -30,6 +30,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->photos);
         $request->validate([
             'title' => 'required|max:255',
             'price' => 'required',

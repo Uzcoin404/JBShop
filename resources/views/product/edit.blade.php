@@ -1,22 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin</title>
-  <link rel="shortcut icon" href="img/logo.svg" type="image/x-icon">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  {{-- <link rel="stylesheet" href="dist/output.css"> --}}
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
 @php
-$photos = json_decode($product->photos);
+  $photos = json_decode($product->photos);
 @endphp
-<body>
+
+@extends('layouts.admin')
+@section('content')
   <div class="2xl:container mx-auto lg:px-10 px-4 mt-12 pb-20">
     <h1 class="lg:text-4xl text-3xl font-bold text-gray-800">Edit Product</h1>
     <form action="{{ route('products.update', $product->id) }}" method="POST" enctype='multipart/form-data'
@@ -30,7 +17,7 @@ $photos = json_decode($product->photos);
               class="block w-full lg:h-20 h-12 rounded-md border-0 py-1.5 px-8 lg:text-lg text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset">
           </div>
         </div>
-        <div class="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-3 sm:grid-cols-2 gap-2.5 mt-2.5">
+        <div id="uploaded_images" class="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-3 sm:grid-cols-2 gap-2.5 mt-2.5">
           @empty(!$photos)
             @foreach ($photos as $image)
               <div class="photo_item relative">
@@ -38,9 +25,9 @@ $photos = json_decode($product->photos);
                 <div class="photo_content absolute top-2.5 right-2.5">
                   <div class="flex gap-x-1.5">
                     <button type="button" class="photo_item_btn">
-                      <img src="img/icons/trash.svg" alt="">
+                      <img src="{{ asset('img/icons/trash.svg') }}" alt="">
                     </button>
-                    <input type="checkbox" name="" id="" class="photo_item_btn">
+                    <input type="radio" name="main_image" id="main_image" class="photo_item_btn">
                   </div>
                 </div>
               </div>
@@ -60,7 +47,8 @@ $photos = json_decode($product->photos);
               <p class="text-lg text-center text-gray-800 mt-5">
                 <b>add photo</b>
               </p>
-              <input name="photos" type="file" class="absolute opacity-0 top-0 left-0 w-full h-full">
+              <input name="photos[]" type="file" id="upload_input" multiple accept="image/*"
+                class="absolute opacity-0 top-0 left-0 w-full h-full">
             </div>
           </div>
         </div>
@@ -73,7 +61,8 @@ $photos = json_decode($product->photos);
               <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <span class="text-gray-800 lg:text-lg font-bold">€</span>
               </div>
-              <input type="number" min="1" name="price" id="price" value="{{ $product->price }}"
+              <input type="number" name="price" id="price" min="0" step="0.01"
+                value="{{ $product->price }}"
                 class="block w-full lg:h-20 h-12 font-bold rounded-md border-0 py-1.5 px-8 lg:text-lg text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
                 placeholder="0.00">
             </div>
@@ -84,7 +73,7 @@ $photos = json_decode($product->photos);
               <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <span class="text-gray-800 lg:text-lg font-bold">€</span>
               </div>
-              <input type="number" min="1" name="discount_price" id="discount_price"
+              <input type="number" name="discount_price" id="discount_price" min="0" step="0.01"
                 @isset($product->discount_price) value="{{ $product->discount_price }}" @endisset
                 class="block w-full lg:h-20 h-12 font-bold rounded-md border-0 py-1.5 px-8 lg:text-lg text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
                 placeholder="0.00">
@@ -93,7 +82,7 @@ $photos = json_decode($product->photos);
         </div>
         <div class="my-8">
           <textarea id="rich_texteditor">
-						@isset($product->html)
+          @isset($product->html)
 {{ $product->html }}
 @endisset
 					</textarea>
@@ -116,7 +105,37 @@ $photos = json_decode($product->photos);
       plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
       toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
     });
-  </script>
-</body>
+    let uploadInput = document.querySelector('#upload_input');
+    let selectedFiles = [];
 
-</html>
+    uploadInput.addEventListener('change', function(event) {
+      if (event.target.files && event.target.files?.length <= 10) {
+        let files = event.target.files;
+        for (let i = 0; i < files.length; i++) {
+          let reader = new FileReader();
+          reader.onload = function(event) {
+            let uniqueID = Date.now() + "_" + Math.floor(Math.random() * 100);
+            let html = `
+						<div class="photo_item relative" data-index="${uniqueID}">
+							<img src="${event.target.result}" alt="" class="h-full">
+							<div class="photo_content absolute top-2.5 right-2.5">
+								<div class="flex gap-x-1.5">
+								<button type="button" id="uploaded_item_delete_btn" class="photo_item_btn" data-index="${uniqueID}">
+									<img src="{{ asset('img/icons/trash.svg') }}" alt="">
+								</button>
+								<input type="radio" name="main_image" id="main_image" class="photo_item_btn">
+								</div>
+							</div>
+						</div>`;
+            document.querySelector('#uploaded_images .add_photos').insertAdjacentHTML('beforebegin', html)
+            selectedFiles.push(files[i]);
+          }
+          reader.readAsDataURL(event.target.files[i])
+        }
+      } else {
+        alert("Uploading more than 10 images not allowed");
+        this.value = ''
+      }
+    })
+  </script>
+@endsection

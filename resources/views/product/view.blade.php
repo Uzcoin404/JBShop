@@ -1,21 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin</title>
-  <link rel="shortcut icon" href="img/logo.svg" type="image/x-icon">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  {{-- <link href="/dist/output.css" rel="stylesheet"> --}}
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-
-<body>
-
+@extends('layouts.admin')
+@section('content')
   <div class="2xl:container mx-auto lg:px-10 px-4 my-12">
     <div class="flex items-center justify-between">
       <h1 class="lg:text-4xl text-3xl font-bold text-gray-800">Admin</h1>
@@ -54,7 +38,7 @@
 
       </button>
     </div>
-    <div id="list_view_tab" class="admin_table_wrapper">
+    <div id="list_view_tab" class="admin_table_wrapper mb-8">
       <table class="admin_table">
         <thead class="text-lg font-normal text-gray-600">
           <tr>
@@ -87,7 +71,7 @@
         </tbody>
       </table>
     </div>
-    <div id="grid_view_tab" class="hidden">
+    <div id="grid_view_tab" class="hidden mb-8">
       <div
         class="grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-4 gap-y-6">
         @empty(!$products)
@@ -119,6 +103,7 @@
         @endempty
       </div>
     </div>
+    {{ $products->links() }}
   </div>
 
   <script>
@@ -158,6 +143,4 @@
       gridView.classList.add('active');
     }
   </script>
-</body>
-
-</html>
+@endsection

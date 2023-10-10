@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
-});
+    $products = Product::orderBy('id')->cursorPaginate(15);
+    return view('home', ['products' => $products]);
+})->name('home');
 
 
 Route::get('/dashboard', function () {

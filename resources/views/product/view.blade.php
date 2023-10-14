@@ -80,7 +80,9 @@
               $images = json_decode($product->photos);
             @endphp
             <div class="grid_view_card">
-              <img src="{{ asset('storage/') . '/' . $images[0] }}" alt="" class="grid_view_product_img">
+              <a href="{{ route('products.show', $product->id) }}">
+                <img src="{{ asset('storage/') . '/' . $images[0] }}" alt="" class="grid_view_product_img">
+              </a>
               <div class="px-4">
                 <h5 class="font-medium text-gray-800 my-3">
                   {{ $product->title }}

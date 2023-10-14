@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(15);
+        $products = Product::orderBy('updated_at', 'desc')->paginate(15);
 
         return view('product.view', compact('products'));
     }
@@ -30,7 +30,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->photos);
         $request->validate([
             'title' => 'required|max:255',
             'price' => 'required',
@@ -41,6 +40,11 @@ class ProductController extends Controller
             foreach ($request->file('photos') as $image) {
                 $path = $image->store('product/img');
                 $imagesPath[] = $path;
+            }
+            if ($request->main_image) {
+                $firstImage = $imagesPath[0];
+                $imagesPath[0] = $imagesPath[$request->main_image];
+                $imagesPath[$request->main_image] = $firstImage;
             }
         }
 
@@ -81,14 +85,26 @@ class ProductController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'price' => 'required',
-            'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photos.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        $imagesPath = [];
+        if ($request->file('photos')) {
+            foreach ($request->file('photos') as $image) {
+                $path = $image->store('product/img');
+                $imagesPath[] = $path;
+            }
+            if ($request->main_image) {
+                $firstImage = $imagesPath[0];
+                $imagesPath[0] = $imagesPath[$request->main_image];
+                $imagesPath[$request->main_image] = $firstImage;
+            }
+        }
         $product->update([
             'title' => $request->title,
             'price' => $request->price,
             'discount_price' => $request->discount_price,
             'html' => $request->html,
-            'photos' => '[]'
+            'photos' => json_encode($imagesPath)
         ]);
         return redirect('products');
     }

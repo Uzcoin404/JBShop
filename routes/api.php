@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,19 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+// Route::middleware('auth')->group(function () {
+    Route::post('upload', function (Request $request) {
+        $request->validate([
+            'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $imagesPath = [];
+        if ($request->file('photos')) {
+            foreach ($request->file('photos') as $image) {
+                $path = $image->store('product/img');
+                $imagesPath[] = $path;
+            }
+        }
+    
+        return response()->json($imagesPath, 201);
+    });
+// });

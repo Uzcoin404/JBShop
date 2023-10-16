@@ -108,7 +108,7 @@
     </div>
   </div>
   <div class="2xl:container mx-auto px-5">
-    <div class="hero_menu relative flex flex-wrap lg:justify-center bg_green mt-8 rounded">
+    {{-- <div class="hero_menu relative flex flex-wrap lg:justify-center bg_green mt-8 rounded">
       <div class="hero_menu_link">
         <span class="link_title 2xl:text-lg text-sm lg:px-8 px-4 py-2.5">Gartenmöbel</span>
         <div class="hero_menu_content 2xl:container">
@@ -127,7 +127,7 @@
           <h2>Some stuff here 3</h2>
         </div>
       </div>
-    </div>
+    </div> --}}
     <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 mt-3 gap-3">
       <div class="header_box">
         <div class="header_box_icon">

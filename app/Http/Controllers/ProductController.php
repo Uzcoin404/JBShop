@@ -85,19 +85,13 @@ class ProductController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'price' => 'required',
-            'photos.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photos' => 'required|json'
         ]);
-        $imagesPath = [];
-        if ($request->file('photos')) {
-            foreach ($request->file('photos') as $image) {
-                $path = $image->store('product/img');
-                $imagesPath[] = $path;
-            }
-            if ($request->main_image) {
-                $firstImage = $imagesPath[0];
-                $imagesPath[0] = $imagesPath[$request->main_image];
-                $imagesPath[$request->main_image] = $firstImage;
-            }
+        $imagesPath = json_decode($request->photos);
+        if ($request->main_image) {
+            $firstImage = $imagesPath[0];
+            $imagesPath[0] = $imagesPath[$request->main_image];
+            $imagesPath[$request->main_image] = $firstImage;
         }
         $product->update([
             'title' => $request->title,

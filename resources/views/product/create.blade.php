@@ -112,7 +112,6 @@
     uploadInput.addEventListener('change', function(event) {
       if (event.target.files && event.target.files?.length <= 10) {
         let files = event.target.files;
-        console.log(dataTransfer.files);
         for (let i = 0; i < files.length; i++) {
           dataTransfer.items.add(files[i])
           let reader = new FileReader();
@@ -166,7 +165,6 @@
     }
 
     function deleteImage(btn) {
-      console.log(btn, btn.getAttribute('data-index'));
       dataTransfer.items.remove(btn.getAttribute('data-index'));
       document.querySelector(`.photo_item[data-index="${btn.getAttribute('data-index')}"]`).remove();
       uploadInput.files = dataTransfer.files;

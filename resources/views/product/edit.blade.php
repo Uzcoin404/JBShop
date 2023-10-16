@@ -9,7 +9,7 @@
       <h1 class="lg:text-4xl text-3xl font-bold text-gray-800">Add Product</h1>
       <a href="{{ route('products.index') }}" class="text-base underline">Go back</a>
     </div>
-    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype='multipart/form-data'
+    <form action="{{ route('products.update', $product->id) }}" method="POST"
       class="flex lg:flex-row flex-col lg:gap-10 gap-y-12 mt-3">
       @csrf
       @method('PATCH')
@@ -22,33 +22,14 @@
               required>
           </div>
         </div>
-        {{-- <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion('section1')">
-            <span class="text-lg font-semibold">Change images order</span>
-          </div>
-          <div id="section1" class="accordion-section">
-            <!-- Content of Section 1 goes here -->
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-        </div>
-
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion('section2')">
-            <span class="text-lg font-semibold">Upload new images</span>
-          </div>
-          <div id="section2" class="accordion-section">
-            <!-- Content of Section 2 goes here -->
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-        </div> --}}
         <div id="uploaded_images" class="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-3 sm:grid-cols-2 gap-2.5 mt-2.5">
-          {{-- @empty(!$photos)
-            @foreach ($photos as $image)
-              <div class="photo_item relative">
-                <img src="{{ asset('storage/') . '/' . $image }}" alt="" class="h-full">
+          @empty(!$photos)
+            @foreach ($photos as $i => $image)
+              <div class="photo_item relative" data-index="{{ $i }}">
+                <img src="{{ asset('storage/') . '/' . $image }}" alt="" id="photo_item_image" class="h-full">
                 <div class="photo_content absolute top-2.5 right-2.5">
                   <div class="flex gap-x-1.5">
-                    <button type="button" class="photo_item_btn">
+                    <button type="button" class="photo_item_btn" data-index="{{ $i }}" onclick="deleteImage(this)">
                       <img src="{{ asset('img/icons/trash.svg') }}" alt="">
                     </button>
                     <input type="radio" name="main_image" id="main_image" class="photo_item_btn">
@@ -56,7 +37,7 @@
                 </div>
               </div>
             @endforeach
-          @endempty --}}
+          @endempty
           <div class="add_photos w-full aspect-square" style="height: 100%;">
             <div>
               <svg xmlns="http://www.w3.org/2000/svg" width="47" height="47" viewBox="0 0 47 47" fill="none"
@@ -72,7 +53,8 @@
                 <b>add photo</b>
               </p>
               <input name="photos[]" type="file" id="upload_input" multiple accept="image/*"
-                class="absolute opacity-0 top-0 left-0 w-full h-full" required>
+                class="absolute opacity-0 top-0 left-0 w-full h-full">
+              <input type="hidden" name="photos" id="photosInput" required />
             </div>
           </div>
         </div>
@@ -123,7 +105,7 @@
     referrerpolicy="origin"></script>
   <script src="{{ asset('js/sortable.min.js') }}"></script>
   <script>
-    tinymce.init({
+    {{-- tinymce.init({
       selector: '#rich_texteditor',
       plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
       menubar: 'file edit view insert format tools table help',
@@ -144,46 +126,49 @@
       toolbar_mode: 'sliding',
       contextmenu: 'link image imagetools table',
       content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-    });
-
-    function toggleAccordion(sectionId) {
-      var section = document.getElementById(sectionId);
-      section.style.display = section.style.display === 'none' ? 'block' : 'none';
-    }
+    }); --}}
 
     let uploadInput = document.querySelector('#upload_input');
     let productForm = document.querySelector('#productForm');
     let uploadedImagesEl = document.querySelector('#uploaded_images');
-    let dataTransfer = new DataTransfer();
+    let photoItem = document.querySelectorAll('.photo_item');
+    if (photoItem && photoItem?.length !== 0) updateImagesOrder();
 
     uploadInput.addEventListener('change', function(event) {
-      if (event.target.files && event.target.files?.length <= 10) {
-        let files = event.target.files;
-        console.log(dataTransfer.files);
-        for (let i = 0; i < files.length; i++) {
-          dataTransfer.items.add(files[i])
-          let reader = new FileReader();
-          reader.onload = function(event) {
-            let html = `
-						<div class="photo_item relative" data-index="${i}">
-							<img src="${event.target.result}" alt="" class="h-full">
-							<div class="photo_content absolute top-2.5 right-2.5">
-								<div class="flex gap-x-1.5">
-								<button type="button" class="photo_item_btn" data-index="${i}" onclick="deleteImage(this)">
-									<img src="{{ asset('img/icons/trash.svg') }}" alt="">
-								</button>
-								<input type="radio" name="main_image" id="main_image" class="photo_item_btn">
-								</div>
-							</div>
-						</div>`;
-            document.querySelector('#uploaded_images .add_photos').insertAdjacentHTML('beforebegin', html)
-          }
-          reader.readAsDataURL(event.target.files[i])
+      if (event.target.files.length !== 0 && event.target.files.length <= 10) {
+        const formData = new FormData();
+        for (const file of event.target.files) {
+          formData.append('photos[]', file);
         }
-        uploadInput.files = dataTransfer.files;
-        setTimeout(() => {
-          updateImagesOrder();
-        }, 100);
+        let files = event.target.files;
+        fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => {
+            let i = photoItem.length;
+            if (!data) return;
+            data.forEach(image => {
+              let html = `
+              <div class="photo_item relative" data-index="${i}">
+                <img src="/storage/${image}" alt="" id="photo_item_image" class="h-full">
+                <div class="photo_content absolute top-2.5 right-2.5">
+                  <div class="flex gap-x-1.5">
+                  <button type="button" class="photo_item_btn" data-index="${i}" onclick="deleteImage(this)">
+                    <img src="{{ asset('img/icons/trash.svg') }}" alt="">
+                  </button>
+                  <input type="radio" name="main_image" id="main_image" class="photo_item_btn">
+                  </div>
+                </div>
+              </div>`
+              document.querySelector('#uploaded_images .add_photos').insertAdjacentHTML('beforebegin', html)
+            })
+            updateImagesOrder();
+          })
+          .catch(error => {
+            alert('Error uploading image. Please try again.' + error);
+          });
       } else {
         alert("Uploading more than 10 images not allowed");
         this.value = ''
@@ -191,40 +176,32 @@
     })
 
     function updateImagesOrder() {
-      let photoItem = document.querySelectorAll('.photo_item');
+      photoItem = document.querySelectorAll('.photo_item');
+      let photoItemImg = document.querySelectorAll('#photo_item_image');
       let photoItemBtn = document.querySelectorAll('button.photo_item_btn');
       let photoItemRadio = document.querySelectorAll('input.photo_item_btn');
-      for (let i = 0; i < uploadInput.files.length; i++) {
+      let images = [];
+      for (let i = 0; i < photoItem.length; i++) {
+        let photoUrl = photoItemImg[i].src.replace(/.*\/storage\//, '');
+        images.push(photoUrl);
+        console.log(images);
         photoItem[i].setAttribute('data-index', i);
         photoItemBtn[i].setAttribute('data-index', i);
         photoItemRadio[i].value = i;
       }
-    }
-
-    function updateInputImagesOrder() {
-      let tempDataTransfer = new DataTransfer();
-      let photoItem = document.querySelectorAll('.photo_item');
-      for (let i = 0; i < uploadInput.files.length; i++) {
-        tempDataTransfer.items.add(uploadInput.files[photoItem[i].getAttribute('data-index')])
-      }
-      uploadInput.files = tempDataTransfer.files;
-      dataTransfer = tempDataTransfer;
-      updateImagesOrder();
+      document.querySelector('#photosInput').value = JSON.stringify(images);
     }
 
     function deleteImage(btn) {
-      console.log(btn, btn.getAttribute('data-index'));
-      dataTransfer.items.remove(btn.getAttribute('data-index'));
       document.querySelector(`.photo_item[data-index="${btn.getAttribute('data-index')}"]`).remove();
-      uploadInput.files = dataTransfer.files;
       updateImagesOrder();
     };
 
     new Sortable(uploadedImagesEl, {
-      animation: 200,
+      animation: 150,
 
       onEnd: (event) => {
-        updateInputImagesOrder()
+        updateImagesOrder();
       }
     })
   </script>

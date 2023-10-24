@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         $imagesPath = [];
         if ($request->file('photos')) {
             foreach ($request->file('photos') as $image) {
-                $path = $image->store('product/img');
+                $path = $image->store('temp/img');
                 $imagesPath[] = $path;
             }
         }

@@ -29,32 +29,30 @@
         </button>
       </div>
       <div class="hidden lg:flex xl:gap-x-12 gap-x-5">
-        <a href="#" class="flex 2xl:text-lg text-sm 2xl:font-bold font-semibold nav__link">
+        <p class="flex 2xl:text-lg text-sm 2xl:font-bold font-semibold nav__link">
           <img src="{{ asset('img/icons/circle-check.svg') }}" alt="" class="mr-2">
           Kauf auf Rechnung via PayPal
-        </a>
-        <a href="#" class="flex 2xl:text-lg text-sm 2xl:font-bold font-semibold nav__link">
+        </p>
+        <p class="flex 2xl:text-lg text-sm 2xl:font-bold font-semibold nav__link">
           <img src="{{ asset('img/icons/circle-check.svg') }}" alt="" class="mr-2">
           Kostenloser Versand
-        </a>
-        <a href="#" class="flex 2xl:text-lg text-sm 2xl:font-bold font-semibold nav__link">
+        </p>
+        <p class="flex 2xl:text-lg text-sm 2xl:font-bold font-semibold nav__link">
           <img src="{{ asset('img/icons/circle-check.svg') }}" alt="" class="mr-2">
           4 Wochen kostenlose Rücknahme
-        </a>
-        <a href="#" class="flex 2xl:text-lg text-sm 2xl:font-bold font-semibold nav__link">
+        </p>
+        <p class="flex 2xl:text-lg text-sm 2xl:font-bold font-semibold nav__link">
           <img src="{{ asset('img/icons/circle-check.svg') }}" alt="" class="mr-2">
           zuverlässiger Service
-        </a>
+        </p>
       </div>
     </nav>
     <div class="hidden" id="navbar_toggle" role="dialog" aria-modal="true">
       <div id="navbar_toggle_backdrop" class="fixed inset-0 z-10"></div>
       <div
-        class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        class="fixed inset-y-0 right-0 z-10 w-4/5 overflow-y-auto bg-white px-6 py-6 sm:max-w-sm ring-1 ring-gray-900/10">
         <div class="flex items-center justify-between">
-          <a href="#" class="-m-1.5 p-1.5">
-            <img class="h-12 w-auto" src="img/icons/logo.png" alt="">
-          </a>
+          <h5 class="font-bold text-lg text-gray-700">Menu</h5>
           <button type="button" id="navbar_close_btn" class="-m-2.5 rounded-md p-2.5 text-gray-700">
             <span class="sr-only">Close menu</span>
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -63,38 +61,25 @@
             </svg>
           </button>
         </div>
-        <div class="mt-6 flow-root">
-          <div class="-my-6 divide-y divide-gray-500/10">
-            <div class="space-y-2 py-6">
-              <a href="#"
-                class="-mx-3 flex rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 nav__link">
-                <img src="img/icons/circle-check.svg" alt="" class="mr-2">
-                Kauf auf Rechnung via PayPal
-              </a>
-              <a href="#"
-                class="-mx-3 flex rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 nav__link">
-                <img src="img/icons/circle-check.svg" alt="" class="mr-2">
-                Kostenloser Versand
-              </a>
-              <a href="#"
-                class="-mx-3 flex rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 nav__link">
-                <img src="img/icons/circle-check.svg" alt="" class="mr-2">
-                4 Wochen kostenlose Rücknahme
-              </a>
-              <a href="#"
-                class="-mx-3 flex rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 nav__link">
-                <img src="img/icons/circle-check.svg" alt="" class="mr-2">
-                zuverlässiger Service
-              </a>
+        <div class="mt-8" id="mobile-menu">
+          <a href="#" class="block py-2 font-medium hover:text-blue-600">Home</a>
+          <div class="relative group">
+            <a href="#" class="block py-2 font-medium hover:text-blue-600">About</a>
+            <div class="hidden group-hover:block">
+              <a href="#" class="block px-2 pl-6 py-2 text-gray-800">Mission</a>
+              <a href="#" class="block px-2 pl-6 py-2 text-gray-800">Vision</a>
             </div>
           </div>
+          <a href="#" class="block py-2 font-medium hover:text-blue-600">Services</a>
+          <a href="#" class="block py-2 font-medium hover:text-blue-600">Contact</a>
         </div>
       </div>
     </div>
   </header>
   <div class="hero">
-    <div class="2xl:container mx-auto px-5 lg:pr-5 pr-0">
-      <div class="hero_content flex items-center">
+    <div class="2xl:container mx-auto px-5">
+      <div class="hero_content flex items-center flex-col md:flex-row">
+        <img src="{{ asset('img/hero-mobile.png') }}" alt="" class="hero_img block md:hidden mb-8">
         <div style="min-width: 320px;">
           <h1 class="hero_title">
             Hochwertige und nicht teure Waren für die ganze Familie!
@@ -103,31 +88,11 @@
             Beste Wahl!
           </a>
         </div>
-        <img src="{{ asset('img/hero.png') }}" alt="" class="hero_img">
+        <img src="{{ asset('img/hero.png') }}" alt="" class="hero_img hidden md:block">
       </div>
     </div>
   </div>
   <div class="2xl:container mx-auto px-5">
-    {{-- <div class="hero_menu relative flex flex-wrap lg:justify-center bg_green mt-8 rounded">
-      <div class="hero_menu_link">
-        <span class="link_title 2xl:text-lg text-sm lg:px-8 px-4 py-2.5">Gartenmöbel</span>
-        <div class="hero_menu_content 2xl:container">
-          <h2>Some stuff here</h2>
-        </div>
-      </div>
-      <div class="hero_menu_link">
-        <span class="link_title 2xl:text-lg text-sm lg:px-8 px-4 py-2.5">Camping&Sport</span>
-        <div class="hero_menu_content 2xl:container">
-          <h2>Some stuff here 2</h2>
-        </div>
-      </div>
-      <div class="hero_menu_link">
-        <span class="link_title 2xl:text-lg text-sm lg:px-8 px-4 py-2.5">Haushalt</span>
-        <div class="hero_menu_content 2xl:container">
-          <h2>Some stuff here 3</h2>
-        </div>
-      </div>
-    </div> --}}
     <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 mt-3 gap-3">
       <div class="header_box">
         <div class="header_box_icon">

@@ -93,6 +93,9 @@ class ProductController extends Controller
             $imagesPath[0] = $imagesPath[$request->main_image];
             $imagesPath[$request->main_image] = $firstImage;
         }
+        foreach ($imagesPath as $i => $image) {
+            // Storage::move("", "");
+        }
         $product->update([
             'title' => $request->title,
             'price' => $request->price,

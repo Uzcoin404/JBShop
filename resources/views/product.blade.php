@@ -17,7 +17,7 @@
       <h1 class="hero_title max-w-none mb-10">
         {{ $product->title }}
       </h1>
-      <div class="grid grid-cols-3 gap-y-5">
+      <div class="grid grid-cols-3 gap-y-5 gap-x-4">
         @foreach ($photos as $image)
           <img src="{{ asset('storage/') . '/' . $image }}" alt=""
             class="product_image{{ $loop->first ? ' col-span-3' : '' }}">

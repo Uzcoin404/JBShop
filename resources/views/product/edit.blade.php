@@ -105,7 +105,7 @@
     referrerpolicy="origin"></script>
   <script src="{{ asset('js/sortable.min.js') }}"></script>
   <script>
-    {{-- tinymce.init({
+    tinymce.init({
       selector: '#rich_texteditor',
       plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
       menubar: 'file edit view insert format tools table help',
@@ -126,7 +126,7 @@
       toolbar_mode: 'sliding',
       contextmenu: 'link image imagetools table',
       content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-    }); --}}
+    });
 
     let uploadInput = document.querySelector('#upload_input');
     let productForm = document.querySelector('#productForm');
@@ -184,7 +184,6 @@
       for (let i = 0; i < photoItem.length; i++) {
         let photoUrl = photoItemImg[i].src.replace(/.*\/storage\//, '');
         images.push(photoUrl);
-        console.log(images);
         photoItem[i].setAttribute('data-index', i);
         photoItemBtn[i].setAttribute('data-index', i);
         photoItemRadio[i].value = i;

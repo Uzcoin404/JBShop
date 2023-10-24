@@ -12,10 +12,6 @@ input:active {
 
 .nav__link {
     color: #191a15;
-    transition: 0.2s;
-}
-.nav__link:hover {
-    color: rgba(25, 26, 21, 0.8);
 }
 .nav__logo {
     height: 60px;
@@ -65,11 +61,11 @@ input:active {
     cursor: default;
     transition: 0.3s;
 }
-.hero_menu_link .link_title:hover {
+/* .hero_menu_link .link_title:hover {
     color: #000;
     background-color: #fff;
     border-color: #2b9b73;
-}
+} */
 .hero_menu_link:first-child .link_title {
     padding-left: 32px;
 }
@@ -366,6 +362,7 @@ button.photo_item_btn {
     }
     .hero_content {
         padding-left: 0;
+        padding-right: 0;
     }
     .admin_table tbody td {
         font-size: 15px;
@@ -376,6 +373,9 @@ button.photo_item_btn {
     }
 }
 @media (max-width: 768px) {
+    .hero_content{
+        height: auto;
+    }
     .hero_title {
         font-size: 32px;
         line-height: 42px;
@@ -385,11 +385,6 @@ button.photo_item_btn {
     }
     .header_box {
         padding: 20px;
-    }
-}
-@media (max-width: 450px) {
-    .hero_img {
-        display: none;
     }
 }
 @media print {

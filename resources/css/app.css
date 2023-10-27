@@ -267,7 +267,8 @@ input:active {
     border-bottom-right-radius: 10px;
 }
 #product_edit_btn,
-.breadcrumb {
+.breadcrumb,
+.category_open_update_modal {
     color: #2b9b73;
 }
 #product_delete_btn {
@@ -288,7 +289,7 @@ input:active {
 }
 .add_product_btn:first-child {
     width: 120px;
-    background-color: transparent;
+    background-color: #fff;
     color: #2b9b73;
 }
 .add_product_btn:first-child:hover {
@@ -319,6 +320,16 @@ button.photo_item_btn {
 }
 .photo_item_btn img {
     pointer-events: none;
+}
+
+.category_update_modal {
+    position: absolute;
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 @media (max-width: 1400px) {

@@ -231,6 +231,7 @@
     const modal = document.querySelector('.fixed');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalContent = document.getElementById('modalContent');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     openCategoryModal.addEventListener('click', function() {
       modalOverlay.style.display = 'block';
@@ -246,8 +247,11 @@
     createCategoryForm.addEventListener('submit', (event) => {
       event.preventDefault()
       formData = new FormData(createCategoryForm);
-      fetch('/api/categories', {
+      fetch('/categories', {
           method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': csrfToken
+          },
           body: formData,
         })
         .then(response => response.json())

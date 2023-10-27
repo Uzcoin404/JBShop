@@ -36,12 +36,13 @@ Route::middleware('auth')->group(function () {
         'edit' => 'products.edit'
     ])->except('show');
 
+    Route::resource('/categories', CategoryController::class);
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/categories', [CategoryController::class, 'index']);
 });
+
 Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('category/{category}/{subcategory?}', function ($category, $subcategory = null) {
     if (!$subcategory) {

@@ -35,4 +35,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return response()->json($imagesPath, 201);
     });
 // });
-Route::resource('/categories', CategoryController::class);
+// Route::get('/categories', [CategoryController::class, 'index']);

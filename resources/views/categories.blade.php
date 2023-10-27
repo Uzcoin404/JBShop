@@ -25,6 +25,20 @@
             <tr>
               <td>{{ $category->name }}</td>
               <td align="right">
+                <button type="submit" class="category_open_update_modal font-bold mr-3">
+                  edit
+                </button>
+                <div class="category_update_modal hidden z-10">
+                  <form action="{{ route('categories.update', $category->id) }}" method="POST" class="block">
+                    @csrf
+                    @method('PATCH')
+                    <h3 class="text-left text-xl font-medium mb-3">Change category name</h3>
+                    <input type="text" name="name" value="{{ $category->name }}"
+                      class="w-full px-4 py-3 rounded-lg border" placeholder="Enter a new name" />
+                    <button type="submit" class="btn !w-auto mt-3 px-8 mr-auto">Save</button>
+                  </form>
+                </div>
+                <div class="category_update_modal_overlay hidden fixed top-0 left-0 w-full h-full"></div>
                 <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
                   @csrf
                   @method('DELETE')
@@ -42,6 +56,21 @@
                 <tr>
                   <td class="left_gap">{{ $subcategory }}</td>
                   <td align="right">
+                    <button type="submit" class="category_open_update_modal font-bold mr-3">
+                      edit
+                    </button>
+                    <div class="category_update_modal hidden z-10">
+                      <form action="{{ route('categories.update', $category->id) }}" method="POST" class="block">
+                        @csrf
+                        @method('PATCH')
+                        <h3 class="text-left text-xl font-medium mb-3">Change category name</h3>
+                        <input type="hidden" name="previous_name" value="{{ $subcategory }}" />
+                        <input type="text" name="name" value="{{ $subcategory }}"
+                          class="w-full px-4 py-3 rounded-lg border" placeholder="Enter a new name" />
+                        <button type="submit" class="btn !w-auto mt-3 px-8 mr-auto">Save</button>
+                      </form>
+                    </div>
+                    <div class="category_update_modal_overlay hidden fixed top-0 left-0 w-full h-full"></div>
                     <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
                       @csrf
                       @method('DELETE')
@@ -85,6 +114,9 @@
     </form>
   </div>
   <script>
+    const updateModalBtn = document.querySelectorAll('.category_open_update_modal');
+    const updateModal = document.querySelectorAll('.category_update_modal');
+    const updateModalOverlay = document.querySelectorAll('.category_update_modal_overlay');
     const openCategoryModal = document.querySelector('#openCategoryModal');
     const createCategoryForm = document.querySelector('#createCategoryForm');
     const categoryName = document.querySelector('#category_name');
@@ -92,6 +124,20 @@
     const modal = document.querySelector('.fixed');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalContent = document.getElementById('modalContent');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    updateModalBtn.forEach((btn, i) => {
+      btn.addEventListener('click', function() {
+        updateModal[i].classList.remove('hidden');
+        updateModalOverlay[i].classList.remove('hidden');
+      });
+    })
+    updateModalOverlay.forEach((btn, i) => {
+      btn.addEventListener('click', function() {
+        updateModal[i].classList.add('hidden');
+        updateModalOverlay[i].classList.add('hidden');
+      });
+    })
 
     openCategoryModal.addEventListener('click', function() {
       modalOverlay.style.display = 'block';
@@ -107,8 +153,11 @@
     createCategoryForm.addEventListener('submit', (event) => {
       event.preventDefault()
       formData = new FormData(createCategoryForm);
-      fetch('/api/categories', {
+      fetch('/categories', {
           method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': csrfToken
+          },
           body: formData,
         })
         .then(response => response.json())

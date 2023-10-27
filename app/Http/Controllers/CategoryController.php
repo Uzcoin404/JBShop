@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -80,7 +81,30 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        if ($request->previous_name) {
+            $subcategories = json_decode($category['subcategory']);
+            $newSubcategories = [];
+            foreach ($subcategories as $subcategory) {
+                if ($subcategory != $request->previous_name) {
+                    $newSubcategories[] = $subcategory;
+                } else {
+                    $newSubcategories[] = $request->name;
+                }
+            }
+            $category->update([
+                'subcategory' => $newSubcategories
+            ]);
+            // $products = Product::whereJsonContains('category', $request->previous_name);
+            // $newCategory = [$category['name'], $request->name];
+            // $products->update(['category' => json_encode($newCategory)]);
+        } else {
+            $category->update([
+                'name' => $request->name
+            ]);
+            // $products = Product::where('category', $category['name'])->update(['category' => $request->name]);
+        }
+        return redirect('categories');
     }
 
     /**

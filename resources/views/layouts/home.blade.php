@@ -62,16 +62,25 @@
           </button>
         </div>
         <div class="mt-8" id="mobile-menu">
-          <a href="#" class="block py-2 font-medium hover:text-blue-600">Home</a>
-          <div class="relative group">
-            <a href="#" class="block py-2 font-medium hover:text-blue-600">About</a>
-            <div class="hidden group-hover:block">
-              <a href="#" class="block px-2 pl-6 py-2 text-gray-800">Mission</a>
-              <a href="#" class="block px-2 pl-6 py-2 text-gray-800">Vision</a>
-            </div>
-          </div>
-          <a href="#" class="block py-2 font-medium hover:text-blue-600">Services</a>
-          <a href="#" class="block py-2 font-medium hover:text-blue-600">Contact</a>
+          @foreach ($categories as $category)
+            @if ($category->subcategory)
+              @php
+                $subcategories = json_decode($category->subcategory);
+              @endphp
+              <div class="relative group">
+                <a href="#" class="block py-2 font-medium hover:text-blue-600">{{ $category->name }}</a>
+                <div class="hidden group-hover:block">
+                  @foreach ($subcategories as $subcategory)
+                    <a href="/category/{{ $category->name }}/{{ $subcategory }}"
+                      class="block px-2 pl-6 py-2 text-gray-800">{{ $subcategory }}</a>
+                  @endforeach
+                </div>
+              </div>
+            @else
+              <a href="/category/{{ $category->name }}"
+                class="block py-2 font-medium hover:text-blue-600">{{ $category->name }}</a>
+            @endif
+          @endforeach
         </div>
       </div>
     </div>
@@ -93,6 +102,34 @@
     </div>
   </div>
   <div class="2xl:container mx-auto px-5">
+    <div class="hero_menu relative flex flex-wrap lg:justify-center bg_green mt-8 rounded">
+      @foreach ($categories as $category)
+        @if (!$category->subcategory)
+          <div class="hero_menu_link">
+            <a href="/category/{{ $category->name }}"
+              class="link_title 2xl:text-lg text-sm lg:px-8 px-4 py-2.5">{{ $category->name }}</a>
+            {{-- <span class="link_title 2xl:text-lg text-sm lg:px-8 px-4 py-2.5">Gartenmöbel</span>
+        <div class="hero_menu_content 2xl:container">
+          <h2>Some stuff here</h2>
+        </div> --}}
+          </div>
+        @else
+          @php
+            $subcategories = json_decode($category->subcategory);
+          @endphp
+          @foreach ($subcategories as $subcategory)
+            <div class="hero_menu_link">
+              <a href="/category/{{ $category->name . '/' . $subcategory }}"
+                class="link_title 2xl:text-lg text-sm lg:px-8 px-4 py-2.5">{{ $subcategory }}</a>
+              {{-- <span class="link_title 2xl:text-lg text-sm lg:px-8 px-4 py-2.5">Gartenmöbel</span>
+        <div class="hero_menu_content 2xl:container">
+          <h2>Some stuff here</h2>
+        </div> --}}
+            </div>
+          @endforeach
+        @endif
+      @endforeach
+    </div>
     <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 mt-3 gap-3">
       <div class="header_box">
         <div class="header_box_icon">

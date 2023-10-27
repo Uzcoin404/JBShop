@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -34,3 +35,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return response()->json($imagesPath, 201);
     });
 // });
+Route::resource('/categories', CategoryController::class);

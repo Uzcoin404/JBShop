@@ -77,7 +77,8 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::findOrFail($id);
-        return view('product.edit', compact('product'));
+        $categories = Category::all();
+        return view('product.edit', compact('product', 'categories'));
     }
 
     /**
@@ -105,7 +106,8 @@ class ProductController extends Controller
             'price' => $request->price,
             'discount_price' => $request->discount_price,
             'html' => $request->html,
-            'photos' => json_encode($imagesPath)
+            'photos' => json_encode($imagesPath),
+            'category' => $request->category
         ]);
         return redirect('products');
     }

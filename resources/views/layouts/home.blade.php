@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  @stack('styles')
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -211,8 +212,8 @@
     @yield('content')
   </div>
   <footer class="footer mt-8">
-    <div class="container mx-auto px-5">
-      <div class="flex flex-wrap gap-x-24 gap-y-8">
+    <div class="2xl:container mx-auto px-5">
+      <div class="flex flex-wrap xl:gap-x-12 gap-x-8 gap-y-8">
         <div class="flex">
           <svg xmlns="http://www.w3.org/2000/svg" width="34" height="31" viewBox="0 0 34 31" fill="none">
             <g id="Vector">
@@ -289,6 +290,7 @@
       document.body.removeChild(tempInput);
     }
   </script>
+  @stack('scripts')
 </body>
 
 </html>

@@ -15,7 +15,9 @@
           <h3 class="xl:text-xl text-lg text-gray-800 font-bold mb-auto">
             {{ $product->title }}
           </h3>
-          <img src="{{ asset('storage/') . '/' . $photos[0] }}" alt="" class="card__img">
+          <a href="{{ route('products.show', $product->id) }}">
+            <img src="{{ asset('storage/') . '/' . $photos[0] }}" alt="" class="card__img">
+          </a>
           <div class="flex gap-x-1.5">
             <div class="flex-auto">
               <span class="product_price flex justify-center items-center h-14 lg:text-3xl text-2xl">

@@ -332,6 +332,22 @@ button.photo_item_btn {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
+.splide__slide img {
+    /* max-width: 100%;
+    max-height: 100%; */
+    width: 98%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.splide__track--nav > .splide__list > .splide__slide.is-active {
+    border: none;
+}
+.splide__arrow{
+    background-color: #2b9b73;
+}
+
 @media (max-width: 1400px) {
     .hero_title {
         font-size: 36px;

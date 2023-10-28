@@ -29,7 +29,8 @@
                 <img src="{{ asset('storage/') . '/' . $image }}" alt="" id="photo_item_image" class="h-full">
                 <div class="photo_content absolute top-2.5 right-2.5">
                   <div class="flex gap-x-1.5">
-                    <button type="button" class="photo_item_btn" data-index="{{ $i }}" onclick="deleteImage(this)">
+                    <button type="button" class="photo_item_btn" data-index="{{ $i }}"
+                      onclick="deleteImage(this)">
                       <img src="{{ asset('img/icons/trash.svg') }}" alt="">
                     </button>
                     <input type="radio" name="main_image" id="main_image" class="photo_item_btn">
@@ -93,11 +94,65 @@
 @endisset
 					</textarea>
         </div>
+        <div class="mb-8">
+          <label for="dropdown" class="block text-gray-600 font-medium mb-2">Category</label>
+          <div class="md:flex md:items-center">
+            <select id="category" name="category" class="grow p-2 rounded-lg border" required>
+              <option value="">Select from existing category</option>
+              @foreach ($categories as $category)
+                @if (!$category['subcategory'])
+                  <option value="{{ $category['name'] }}">{{ $category['name'] }}</option>
+                @else
+                  @php
+                    $subcategories = json_decode($category['subcategory']);
+                  @endphp
+                  <optgroup data-id="{{ $category['name'] }}" label="{{ $category['name'] }}">
+                    @foreach ($subcategories as $subcategory)
+                      @php
+                        $suboption = json_encode([$category['name'], $subcategory]);
+                      @endphp
+                      <option value="{{ $suboption }}">{{ $subcategory }}</option>
+                    @endforeach
+                  </optgroup>
+                @endif
+              @endforeach
+            </select>
+            <span class="mx-5">or</span>
+            <button type="button" id="openCategoryModal" class="btn grow max-w-max add_product_btn px-5">Create
+              Catogory</button>
+          </div>
+          <p id="categoryStatusText" class="hidden text-green-500 mt-2.5">Catogory added successfuly</p>
+        </div>
         <div class="flex lg:justify-end">
           <a href="{{ route('products.index') }}" class="btn add_product_btn mr-2">Cancel</a>
           <button type="submit" class="btn add_product_btn">Save</button>
         </div>
       </div>
+    </form>
+  </div>
+  <!-- Modal Overlay -->
+  <div class="hidden fixed top-0 left-0 w-full h-full bg-black opacity-50 z-40" id="modalOverlay"></div>
+
+  <!-- Modal Content -->
+  <div
+    class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg z-50"
+    id="modalContent">
+    <h1 class="text-xl font-bold mb-4">Create New Category</h1>
+    <form id="createCategoryForm" action="#">
+      <div class="mb-4" style="min-width: 320px;">
+        <input type="text" name="name" id="category_name" class="w-full rounded-lg border"
+          placeholder="Category name" required>
+      </div>
+      <div class="mb-4" style="min-width: 320px;">
+        <label for="category" class="mb-4">Select category to create subcategory</label>
+        <select name="subcategory" class="w-full p-2 rounded-lg border">
+          <option value="">Select from existing category</option>
+          @foreach ($categories as $category)
+            <option value="{{ $category['name'] }}">{{ $category['name'] }}</option>
+          @endforeach
+        </select>
+      </div>
+      <button type="submit" id="createCategoryBtn" class="btn add_product_btn">Create</button>
     </form>
   </div>
 
@@ -195,6 +250,65 @@
       document.querySelector(`.photo_item[data-index="${btn.getAttribute('data-index')}"]`).remove();
       updateImagesOrder();
     };
+
+    const openCategoryModal = document.querySelector('#openCategoryModal');
+    const createCategoryForm = document.querySelector('#createCategoryForm');
+    const categoryName = document.querySelector('#category_name');
+    const category = document.querySelector('#category');
+    const modal = document.querySelector('.fixed');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalContent = document.getElementById('modalContent');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    openCategoryModal.addEventListener('click', function() {
+      modalOverlay.style.display = 'block';
+      modalContent.style.display = 'block';
+    });
+
+    modalOverlay.addEventListener('click', (event) => {
+      if (event.target === modalOverlay) {
+        modalOverlay.style.display = 'none';
+        modalContent.style.display = 'none';
+      }
+    });
+    createCategoryForm.addEventListener('submit', (event) => {
+      event.preventDefault()
+      formData = new FormData(createCategoryForm);
+      fetch('/categories', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': csrfToken
+          },
+          body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.status) {
+            modalOverlay.style.display = 'none';
+            modalContent.style.display = 'none';
+            let option = document.createElement("option");
+            if (data.data?.category) {
+              option.value = JSON.stringify([data.data.category, data.data.name]);
+              option.text = data.data.name
+              category.querySelector(`[data-id="${data.data.category}"]`)?.appendChild(option);
+              if (!category.querySelector(`[data-id="${data.data.category}"]`)) {
+                location.reload();
+              }
+            } else {
+              option.value = option.text = data.data.name;
+              category.appendChild(option);
+            }
+            document.querySelector('#categoryStatusText').classList.remove('hidden');
+          } else {
+            alert(data.error);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          alert('Error creating category. Please try again.');
+        });
+    })
 
     new Sortable(uploadedImagesEl, {
       animation: 150,

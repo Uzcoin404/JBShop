@@ -75,12 +75,13 @@
             <select id="category" name="category" class="grow p-2 rounded-lg border" required>
               <option value="">Select from existing category</option>
               @foreach ($categories as $category)
-                <option value="{{ $category['name'] }}">{{ $category['name'] }}</option>
-                @if ($category['subcategory'])
+                @if (!$category['subcategory'])
+                  <option value="{{ $category['name'] }}">{{ $category['name'] }}</option>
+                @else
                   @php
                     $subcategories = json_decode($category['subcategory']);
                   @endphp
-                  <optgroup data-id="{{ $category['name'] }}">
+                  <optgroup data-id="{{ $category['name'] }}" label="{{ $category['name'] }}">
                     @foreach ($subcategories as $subcategory)
                       @php
                         $suboption = json_encode([$category['name'], $subcategory]);

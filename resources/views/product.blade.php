@@ -12,17 +12,42 @@
 @endphp
 @extends('layouts.home')
 @section('content')
+  @push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+  @endpush
   <div id="productPrintArea" class="flex lg:flex-nowrap flex-wrap xl:gap-x-12 lg:gap-x-6 mt-16">
     <div class="product_section">
       <h1 class="hero_title max-w-none mb-10">
         {{ $product->title }}
       </h1>
-      <div class="grid grid-cols-3 gap-y-5 gap-x-4">
+      <section id="main-carousel" class="splide mb-4" style="height: 500px;">
+        <div class="splide__track">
+          <ul class="splide__list">
+            @foreach ($photos as $image)
+              <li class="splide__slide">
+                <img src="{{ asset('storage/') . '/' . $image }}" alt="">
+              </li>
+            @endforeach
+          </ul>
+        </div>
+      </section>
+      <section id="thumbnail-carousel" class="splide" style="height: 200px;">
+        <div class="splide__track">
+          <ul class="splide__list">
+            @foreach ($photos as $image)
+              <li class="splide__slide">
+                <img src="{{ asset('storage/') . '/' . $image }}" alt="">
+              </li>
+            @endforeach
+          </ul>
+        </div>
+      </section>
+      {{-- <div class="grid grid-cols-3 gap-y-5 gap-x-4">
         @foreach ($photos as $image)
           <img src="{{ asset('storage/') . '/' . $image }}" alt=""
             class="product_image{{ $loop->first ? ' col-span-3' : '' }}">
         @endforeach
-      </div>
+      </div> --}}
     </div>
     <div class="product_section">
       <div class="flex flex-wrap gap-3 justify-between lg:mt-0 my-8">
@@ -57,6 +82,36 @@
           </button>
         </div>
       </div>
+      @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var main = new Splide('#main-carousel', {
+              type: 'fade',
+              {{-- fixedWidth: 500, --}}
+              arrows: false,
+              drag: false,
+              rewind: true,
+              pagination: false,
+            });
+
+
+            var thumbnails = new Splide('#thumbnail-carousel', {
+              fixedWidth: 300,
+              fixedHeight: 200,
+              gap: 10,
+              rewind: true,
+              pagination: false,
+              isNavigation: true,
+              arrow: true
+            });
+
+            main.sync(thumbnails);
+            main.mount();
+            thumbnails.mount();
+          });
+        </script>
+      @endpush
       {!! $product->html !!}
       {{-- <table class="product_details_table mt-5 mb-10">
           <tbody>

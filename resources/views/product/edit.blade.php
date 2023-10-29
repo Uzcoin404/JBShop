@@ -122,6 +122,12 @@
               Catogory</button>
           </div>
           <p id="categoryStatusText" class="hidden text-green-500 mt-2.5">Catogory added successfuly</p>
+          <div class="relative mt-6">
+            <button type="button" onclick="copyToClipboard(document.querySelector('#ebay_link').value)"
+              class="absolute top-0 bottom-0 left-3">Copy</button>
+            <input type="text" name="ebay_link" id="ebay_link" value="{{ $product->ebay_link }}"
+              class="block w-full h-12 rounded-md border-0 py-1.5 pl-16 pr-8 lg:text-lg text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset">
+          </div>
         </div>
         <div class="flex lg:justify-end">
           <a href="{{ route('products.index') }}" class="btn add_product_btn mr-2">Cancel</a>

@@ -20,7 +20,7 @@
       <h1 class="hero_title max-w-none mb-10">
         {{ $product->title }}
       </h1>
-      <section id="main-carousel" class="splide mb-4" style="height: 500px;">
+      {{-- <section id="main-carousel" class="splide mb-4" style="height: 500px;">
         <div class="splide__track">
           <ul class="splide__list">
             @foreach ($photos as $image)
@@ -41,13 +41,19 @@
             @endforeach
           </ul>
         </div>
-      </section>
-      {{-- <div class="grid grid-cols-3 gap-y-5 gap-x-4">
-        @foreach ($photos as $image)
-          <img src="{{ asset('storage/') . '/' . $image }}" alt=""
-            class="product_image{{ $loop->first ? ' col-span-3' : '' }}">
+      </section> --}}
+      <div class="grid grid-cols-3 gap-y-5 gap-x-4">
+        @foreach ($photos as $i => $image)
+          <img src="{{ asset('storage/') . '/' . $image }}" alt="" data-id="{{ $i }}"
+            class="product_image{{ $loop->first ? ' col-span-3' : '' }}" onclick="openImages(this)">
         @endforeach
-      </div> --}}
+      </div>
+    </div>
+    <div id="myModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img src="" alt="" id="modal-image">
+      <button class="prev" onclick="prevImage()">&#10094;</button>
+      <button class="next" onclick="nextImage()">&#10095;</button>
     </div>
     <div class="product_section">
       <div class="flex flex-wrap gap-3 justify-between lg:mt-0 my-8">
@@ -82,13 +88,16 @@
           </button>
         </div>
       </div>
-      @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-        <script>
-          document.addEventListener('DOMContentLoaded', function() {
+      {!! $product->html !!}
+    </div>
+  </div>
+  @push('scripts')
+    {{-- <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script> --}}
+    <script>
+      {{-- document.addEventListener('DOMContentLoaded', function() {
             var main = new Splide('#main-carousel', {
               type: 'fade',
-              {{-- fixedWidth: 500, --}}
+              fixedWidth: 500,
               arrows: false,
               drag: false,
               rewind: true,
@@ -109,89 +118,53 @@
             main.sync(thumbnails);
             main.mount();
             thumbnails.mount();
-          });
-        </script>
-      @endpush
-      {!! $product->html !!}
-      {{-- <table class="product_details_table mt-5 mb-10">
-          <tbody>
-            <tr>
-              <td>Artikelzustand</td>
-              <th align="left">Neu mit Etikett: Neuer, unbenutzter und nicht getragener Artikel in der
-                Originalverpackung (wie z. ...
-                Mehr zum ThemaÜber den Zustand</th>
-            </tr>
-            <tr>
-              <td>Farbe</td>
-              <th align="left">Schwarz</th>
-            </tr>
-            <tr>
-              <td>Besonderheiten</td>
-              <th align="left">Erweiterbar, Leicht, Mit Schloss, Räder/Rollen, Teleskopgriff</th>
-            </tr>
-            <tr>
-              <td>Material</td>
-              <th align="left">Kunststoff</th>
-            </tr>
-            <tr>
-              <td>Ausführung</td>
-              <th align="left">Hartschale</th>
-            </tr>
-            <tr>
-              <td>Marke</td>
-              <th align="left">Cheffinger</th>
-            </tr>
-            <tr>
-              <td>Produktart</td>
-              <th align="left">Koffer</th>
-            </tr>
-            <tr>
-              <td>Rollen</td>
-              <th align="left">Mit 4 Rollen</th>
-            </tr>
-            <tr>
-              <td>Geschlecht</td>
-              <th align="left">Unisex</th>
-            </tr>
-          </tbody>
-        </table>
-        <h5 class="xl:text-lg text-base font-bold leading-10">Artikelbeschreibung des Verkäufers</h5>
-        <h6 class="xl:text-lg text-base font-medium leading-10">Hochwertige Hartschalen Reisekoffer</h6>
-        <ul class="product_info_list xl:text-lg text-base">
-          <li>Aus robustem und qualitativem ABS-Material hergestellt</li>
-          <li>Diese bieten eine gute Widerstandsfähigkeit vor Stößen und Kratzern und Schmutz.</li>
-          <li>Jeder Koffer ist mit 4 Doppelrollen ausgestatte,welche sind 360 drehen können,das manövrieren ist damit
-            sehr leicht und einfach und vor allem sehr leise.</li>
-          <li>Ein Zahlenschloss ist mit dabei,dieser sorgt für erhöhte Sicherheit für die Gegenstände welche sich im
-            Koffer innen befinden.</li>
-          <li>Alle Koffer haben 2 ergonomische Tragegriffe,eines oben und eines auf der Seite,damit kann man die Koffer
-            heben.</li>
-          <li>4 Seitenfüße sind ebenfalls auf jedem Koffer zu finden,damit kann man die Koffer auch Waagrecht stellen.
-          </li>
-          <li>Ein verstellbarer Teleskopgriff ist ebenso in der Ausstattung,den kann man in die Höhe verstellen damit
-            jeder es leicht schieben oder tragen kann.</li>
-          <li>Die Koffer kann man in einander stapeln,damit erspart man sich beim Verstauen enorm viel Platz.</li>
-          <li>Eine Separate Netztasche im kleinen Trolley ermöglicht ein rasches verstauen von Gegenständen,ein X -
-            förmiger Gurt ist ebenfalls mit dabei.</li>
-          <li>Ein Weiches und sanftes Innenfutter deckt das innere der Koffer.</li>
-          <li>Farbe: Schwarz,Grau,Hell blau</li>
-        </ul>
-        <h5 class="xl:text-lg text-base font-bold leading-10">Abmessungen</h5>
-        <h6 class="xl:text-lg text-base font-medium leading-10">M Koffer</h6>
-        <ul class="product_info_list xl:text-lg text-base">
-          <li>Außenmaße : ca. H 55 x B 37 x T 23 cm</li>
-          <li>Gewicht : ca. 2,60 kg</li>
-        </ul>
-        <h6 class="xl:text-lg text-base font-medium leading-10">L Koffer</h6>
-        <ul class="product_info_list xl:text-lg text-base">
-          <li>Außenmaße : ca. H 55 x B 37 x T 23 cm</li>
-          <li>Gewicht : ca. 2,60 kg</li>
-        </ul>
-        <h6 class="xl:text-lg text-base font-medium leading-10">XL Koffer</h6>
-        <ul class="product_info_list xl:text-lg text-base">
-          <li>Außenmaße : ca. H 55 x B 37 x T 23 cm</li>
-          <li>Gewicht : ca. 2,60 kg</li>
-        </ul> --}}
-    </div>
-  </div>
+          }); --}}
+
+      let currentImageIndex = 0;
+      const images = []
+      document.querySelectorAll('.product_image').forEach(image => {
+        images.push(image.src);
+      })
+
+      function openImages(image) {
+        const modal = document.getElementById("myModal");
+        modal.style.display = "block";
+        currentImageIndex = image.getAttribute('data-id');
+        showImage(currentImageIndex);
+      }
+
+      function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+      }
+
+      function prevImage() {
+        if (currentImageIndex > 0) {
+          currentImageIndex--;
+          showImage(currentImageIndex);
+        }
+      }
+
+      function nextImage() {
+        if (currentImageIndex < images.length - 1) {
+          currentImageIndex++;
+          showImage(currentImageIndex);
+        }
+      }
+
+      function showImage(index) {
+        const modalImage = document.getElementById("modal-image");
+        modalImage.src = images[index];
+      }
+
+      document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape") {
+          closeModal();
+        } else if (event.key === "ArrowLeft") {
+          prevImage();
+        } else if (event.key === "ArrowRight") {
+          nextImage();
+        }
+      });
+    </script>
+  @endpush
 @endsection

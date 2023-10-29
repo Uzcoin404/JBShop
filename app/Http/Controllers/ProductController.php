@@ -56,7 +56,8 @@ class ProductController extends Controller
             'discount_price' => $request->discount_price,
             'html' => $request->html,
             'photos' => json_encode($imagesPath),
-            'category' => $request->category
+            'category' => $request->category,
+            'ebay_link' => $request->ebay_link
         ]);
         return redirect('products');
     }
@@ -107,7 +108,8 @@ class ProductController extends Controller
             'discount_price' => $request->discount_price,
             'html' => $request->html,
             'photos' => json_encode($imagesPath),
-            'category' => $request->category
+            'category' => $request->category,
+            'ebay_link' => $request->ebay_link
         ]);
         return redirect('products');
     }

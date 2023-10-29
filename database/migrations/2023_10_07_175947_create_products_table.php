@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('html');
             $table->json('photos');
             $table->string('category');
-            // $table->string('ebay_link')->nullable();
+            $table->string('ebay_link')->nullable();
             $table->timestamps();
         });
     }

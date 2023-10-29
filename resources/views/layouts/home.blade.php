@@ -279,11 +279,13 @@
     document.querySelector('#navbar_toggle_backdrop').addEventListener('click', function() {
       navbarToggle.classList.add('hidden');
     })
-    document.querySelector('#product_copy_link').addEventListener('click', copyToClipboard);
+    document.querySelector('#product_copy_link').addEventListener('click', function() {
+      copyToClipboard(window.location.href);
+    });
 
-    function copyToClipboard() {
+    function copyToClipboard(text) {
       var tempInput = document.createElement("input");
-      tempInput.value = window.location.href;
+      tempInput.value = text;
       document.body.appendChild(tempInput);
       tempInput.select();
       document.execCommand("copy");

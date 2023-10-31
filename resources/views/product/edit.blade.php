@@ -9,6 +9,16 @@
       <h1 class="lg:text-4xl text-3xl font-bold text-gray-800">Add Product</h1>
       <a href="{{ route('products.index') }}" class="text-base underline">Go back</a>
     </div>
+    @if ($errors->any())
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 my-2 rounded relative" role="alert">
+        <strong class="font-bold">Validation Error</strong>
+        <ul>
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
     <form action="{{ route('products.update', $product->id) }}" method="POST"
       class="flex lg:flex-row flex-col lg:gap-10 gap-y-12 mt-3">
       @csrf
@@ -88,7 +98,7 @@
           </div>
         </div>
         <div class="my-8">
-          <textarea id="rich_texteditor" name='html'>
+          <textarea id="rich_texteditor" name='html' required>
           @isset($product->html)
 {{ $product->html }}
 @endisset
@@ -101,7 +111,8 @@
               <option value="">Select from existing category</option>
               @foreach ($categories as $category)
                 @if (!$category['subcategory'])
-                  <option value="{{ $category['name'] }}">{{ $category['name'] }}</option>
+                  <option value="{{ $category['name'] }}"
+                    {{ $product->category == $category['name'] ? 'selected' : '' }}>{{ $category['name'] }}</option>
                 @else
                   @php
                     $subcategories = json_decode($category['subcategory']);
@@ -111,7 +122,8 @@
                       @php
                         $suboption = json_encode([$category['name'], $subcategory]);
                       @endphp
-                      <option value="{{ $suboption }}">{{ $subcategory }}</option>
+                      <option value="{{ $suboption }}" {{ $product->category == $suboption ? 'selected' : '' }}>
+                        {{ $subcategory }}</option>
                     @endforeach
                   </optgroup>
                 @endif

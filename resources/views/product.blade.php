@@ -45,15 +45,18 @@
       <div class="grid grid-cols-3 gap-y-5 gap-x-4">
         @foreach ($photos as $i => $image)
           <img src="{{ asset('storage/') . '/' . $image }}" alt="" data-id="{{ $i }}"
-            class="product_image{{ $loop->first ? ' col-span-3' : '' }}" onclick="openImages(this)">
+            class="product_image{{ $loop->first ? ' col-span-3' : '' }} cursor-pointer" onclick="openImages(this)">
         @endforeach
       </div>
     </div>
-    <div id="myModal" class="modal">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <img src="" alt="" id="modal-image">
-      <button class="prev" onclick="prevImage()">&#10094;</button>
-      <button class="next" onclick="nextImage()">&#10095;</button>
+    <div id="myModal"
+      class="modal hidden fixed top-0 left-0 w-full h-full z-10 flex justify-center items-center bg-black bg-opacity-80">
+      <span class="close absolute top-4 right-6 text-white text-2xl cursor-pointer" onclick="closeModal()">&times;</span>
+      <img src="image1.jpg" alt="Product Image" id="modal-image" class="m-auto max-w-full max-h-full">
+      <button class="prev absolute top-1/2 left-6 text-white text-2xl cursor-pointer"
+        onclick="prevImage()">&#10094;</button>
+      <button class="next absolute top-1/2 right-6 text-white text-2xl cursor-pointer"
+        onclick="nextImage()">&#10095;</button>
     </div>
     <div class="product_section">
       <div class="flex flex-wrap gap-3 justify-between lg:mt-0 my-8">
@@ -128,13 +131,13 @@
 
       function openImages(image) {
         const modal = document.getElementById("myModal");
-        modal.style.display = "block";
+        modal.classList.remove("hidden");
         currentImageIndex = image.getAttribute('data-id');
         showImage(currentImageIndex);
       }
 
       function closeModal() {
-        document.getElementById("myModal").style.display = "none";
+        document.getElementById("myModal").classList.add("hidden");
       }
 
       function prevImage() {

@@ -91,7 +91,8 @@ class ProductController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'price' => 'required',
-            'photos' => 'required|json'
+            'photos' => 'required|json',
+            'html' => 'required'
         ]);
         $imagesPath = json_decode($request->photos);
         if ($request->main_image) {
